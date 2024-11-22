@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QLVTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ChiNhanh">
+    <Key>
+      <PropertyRef Name="MACN" />
+    </Key>
+    <Property Name="MACN" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="ChiNhanh" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="DiaChi" Type="nvarchar" MaxLength="100" />
+    <Property Name="SoDT" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="CT_PhatSinh">
+    <Key>
+      <PropertyRef Name="Phieu" />
+      <PropertyRef Name="MaVT" />
+    </Key>
+    <Property Name="Phieu" Type="char" MaxLength="8" Nullable="false" />
+    <Property Name="MaVT" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="SoLuong" Type="int" />
+    <Property Name="DonGia" Type="float" />
+    <Property Name="LyDo" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Kho">
+    <Key>
+      <PropertyRef Name="MaKho" />
+    </Key>
+    <Property Name="MaKho" Type="char" MaxLength="2" Nullable="false" />
+    <Property Name="TenKho" Type="nvarchar" MaxLength="50" />
+    <Property Name="DiaChi" Type="nvarchar" MaxLength="70" />
+    <Property Name="MaCN" Type="char" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Login">
+    <Key>
+      <PropertyRef Name="MaLogin" />
+    </Key>
+    <Property Name="MaLogin" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaNV" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="Password" Type="nvarchar" MaxLength="200" />
+    <Property Name="MaNhom" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'QLVT.dbo.MSmerge_conflict_QLVT_CN2_Login' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="MSmerge_conflict_QLVT_CN2_Login">
+    <Key>
+      <PropertyRef Name="MaLogin" />
+      <PropertyRef Name="rowguid" />
+    </Key>
+    <Property Name="MaLogin" Type="int" Nullable="false" />
+    <Property Name="MaNV" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="Password" Type="nvarchar" MaxLength="200" />
+    <Property Name="MaNhom" Type="int" />
+    <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="origin_datasource_id" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityType Name="NhanVien">
+    <Key>
+      <PropertyRef Name="MaNV" />
+    </Key>
+    <Property Name="MaNV" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="Ho" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="50" />
+    <Property Name="DiaChi" Type="nvarchar" MaxLength="50" />
+    <Property Name="NgaySinh" Type="datetime" />
+    <Property Name="Luong" Type="float" />
+    <Property Name="GhiChu" Type="ntext" />
+    <Property Name="MaCN" Type="char" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Nhom">
+    <Key>
+      <PropertyRef Name="MaNhom" />
+    </Key>
+    <Property Name="MaNhom" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="ThuTu" Type="int" Nullable="false" />
+    <Property Name="GhiChu" Type="ntext" />
+  </EntityType>
+  <EntityType Name="PhatSinh">
+    <Key>
+      <PropertyRef Name="Phieu" />
+    </Key>
+    <Property Name="Phieu" Type="char" MaxLength="8" Nullable="false" />
+    <Property Name="Ngay" Type="datetime" />
+    <Property Name="Loai" Type="char" MaxLength="1" />
+    <Property Name="HoTenKH" Type="nvarchar" MaxLength="50" />
+    <Property Name="ThanhTien" Type="float" />
+    <Property Name="MaNV" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="MaKho" Type="char" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="VatTu">
+    <Key>
+      <PropertyRef Name="MaVT" />
+    </Key>
+    <Property Name="MaVT" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="TenVT" Type="nvarchar" MaxLength="50" />
+    <Property Name="DVT" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_CT_PhatSinh_PhatSinh">
+    <End Role="PhatSinh" Type="Self.PhatSinh" Multiplicity="1" />
+    <End Role="CT_PhatSinh" Type="Self.CT_PhatSinh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhatSinh">
+        <PropertyRef Name="Phieu" />
+      </Principal>
+      <Dependent Role="CT_PhatSinh">
+        <PropertyRef Name="Phieu" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CT_PhatSinh_VatTu">
+    <End Role="VatTu" Type="Self.VatTu" Multiplicity="1" />
+    <End Role="CT_PhatSinh" Type="Self.CT_PhatSinh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VatTu">
+        <PropertyRef Name="MaVT" />
+      </Principal>
+      <Dependent Role="CT_PhatSinh">
+        <PropertyRef Name="MaVT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Kho_ChiNhanh">
+    <End Role="ChiNhanh" Type="Self.ChiNhanh" Multiplicity="0..1" />
+    <End Role="Kho" Type="Self.Kho" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChiNhanh">
+        <PropertyRef Name="MACN" />
+      </Principal>
+      <Dependent Role="Kho">
+        <PropertyRef Name="MaCN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Login_NhanVien">
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="0..1" />
+    <End Role="Login" Type="Self.Login" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanVien">
+        <PropertyRef Name="MaNV" />
+      </Principal>
+      <Dependent Role="Login">
+        <PropertyRef Name="MaNV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Login_Nhom">
+    <End Role="Nhom" Type="Self.Nhom" Multiplicity="0..1" />
+    <End Role="Login" Type="Self.Login" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Nhom">
+        <PropertyRef Name="MaNhom" />
+      </Principal>
+      <Dependent Role="Login">
+        <PropertyRef Name="MaNhom" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NhanVien_ChiNhanh">
+    <End Role="ChiNhanh" Type="Self.ChiNhanh" Multiplicity="0..1" />
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChiNhanh">
+        <PropertyRef Name="MACN" />
+      </Principal>
+      <Dependent Role="NhanVien">
+        <PropertyRef Name="MaCN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PhatSinh_Kho">
+    <End Role="Kho" Type="Self.Kho" Multiplicity="0..1" />
+    <End Role="PhatSinh" Type="Self.PhatSinh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kho">
+        <PropertyRef Name="MaKho" />
+      </Principal>
+      <Dependent Role="PhatSinh">
+        <PropertyRef Name="MaKho" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PhatSinh_NhanVien">
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="0..1" />
+    <End Role="PhatSinh" Type="Self.PhatSinh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanVien">
+        <PropertyRef Name="MaNV" />
+      </Principal>
+      <Dependent Role="PhatSinh">
+        <PropertyRef Name="MaNV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="QLVTModelStoreContainer">
+    <EntitySet Name="ChiNhanh" EntityType="Self.ChiNhanh" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CT_PhatSinh" EntityType="Self.CT_PhatSinh" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Kho" EntityType="Self.Kho" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NhanVien" EntityType="Self.NhanVien" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Nhom" EntityType="Self.Nhom" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhatSinh" EntityType="Self.PhatSinh" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VatTu" EntityType="Self.VatTu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MSmerge_conflict_QLVT_CN2_Login" EntityType="Self.MSmerge_conflict_QLVT_CN2_Login" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [MSmerge_conflict_QLVT_CN2_Login].[MaLogin] AS [MaLogin], 
+    [MSmerge_conflict_QLVT_CN2_Login].[MaNV] AS [MaNV], 
+    [MSmerge_conflict_QLVT_CN2_Login].[Password] AS [Password], 
+    [MSmerge_conflict_QLVT_CN2_Login].[MaNhom] AS [MaNhom], 
+    [MSmerge_conflict_QLVT_CN2_Login].[rowguid] AS [rowguid], 
+    [MSmerge_conflict_QLVT_CN2_Login].[origin_datasource_id] AS [origin_datasource_id]
+    FROM [dbo].[MSmerge_conflict_QLVT_CN2_Login] AS [MSmerge_conflict_QLVT_CN2_Login]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_CT_PhatSinh_PhatSinh" Association="Self.FK_CT_PhatSinh_PhatSinh">
+      <End Role="PhatSinh" EntitySet="PhatSinh" />
+      <End Role="CT_PhatSinh" EntitySet="CT_PhatSinh" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CT_PhatSinh_VatTu" Association="Self.FK_CT_PhatSinh_VatTu">
+      <End Role="VatTu" EntitySet="VatTu" />
+      <End Role="CT_PhatSinh" EntitySet="CT_PhatSinh" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Kho_ChiNhanh" Association="Self.FK_Kho_ChiNhanh">
+      <End Role="ChiNhanh" EntitySet="ChiNhanh" />
+      <End Role="Kho" EntitySet="Kho" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Login_NhanVien" Association="Self.FK_Login_NhanVien">
+      <End Role="NhanVien" EntitySet="NhanVien" />
+      <End Role="Login" EntitySet="Login" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Login_Nhom" Association="Self.FK_Login_Nhom">
+      <End Role="Nhom" EntitySet="Nhom" />
+      <End Role="Login" EntitySet="Login" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NhanVien_ChiNhanh" Association="Self.FK_NhanVien_ChiNhanh">
+      <End Role="ChiNhanh" EntitySet="ChiNhanh" />
+      <End Role="NhanVien" EntitySet="NhanVien" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PhatSinh_Kho" Association="Self.FK_PhatSinh_Kho">
+      <End Role="Kho" EntitySet="Kho" />
+      <End Role="PhatSinh" EntitySet="PhatSinh" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PhatSinh_NhanVien" Association="Self.FK_PhatSinh_NhanVien">
+      <End Role="NhanVien" EntitySet="NhanVien" />
+      <End Role="PhatSinh" EntitySet="PhatSinh" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

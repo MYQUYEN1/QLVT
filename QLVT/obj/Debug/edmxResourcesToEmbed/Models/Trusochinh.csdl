@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QLVTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ChiNhanh">
+    <Key>
+      <PropertyRef Name="MACN" />
+    </Key>
+    <Property Name="MACN" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="ChiNhanh1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DiaChi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="SoDT" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Khoes" Relationship="Self.FK_Kho_ChiNhanh" FromRole="ChiNhanh" ToRole="Kho" />
+    <NavigationProperty Name="NhanViens" Relationship="Self.FK_NhanVien_ChiNhanh" FromRole="ChiNhanh" ToRole="NhanVien" />
+  </EntityType>
+  <EntityType Name="CT_PhatSinh">
+    <Key>
+      <PropertyRef Name="Phieu" />
+      <PropertyRef Name="MaVT" />
+    </Key>
+    <Property Name="Phieu" Type="String" MaxLength="8" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="MaVT" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="SoLuong" Type="Int32" />
+    <Property Name="DonGia" Type="Double" />
+    <Property Name="LyDo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="PhatSinh" Relationship="Self.FK_CT_PhatSinh_PhatSinh" FromRole="CT_PhatSinh" ToRole="PhatSinh" />
+    <NavigationProperty Name="VatTu" Relationship="Self.FK_CT_PhatSinh_VatTu" FromRole="CT_PhatSinh" ToRole="VatTu" />
+  </EntityType>
+  <EntityType Name="Kho">
+    <Key>
+      <PropertyRef Name="MaKho" />
+    </Key>
+    <Property Name="MaKho" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="TenKho" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DiaChi" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+    <Property Name="MaCN" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <NavigationProperty Name="ChiNhanh" Relationship="Self.FK_Kho_ChiNhanh" FromRole="Kho" ToRole="ChiNhanh" />
+    <NavigationProperty Name="PhatSinhs" Relationship="Self.FK_PhatSinh_Kho" FromRole="Kho" ToRole="PhatSinh" />
+  </EntityType>
+  <EntityType Name="Login">
+    <Key>
+      <PropertyRef Name="MaLogin" />
+    </Key>
+    <Property Name="MaLogin" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaNV" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="Password" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="MaNhom" Type="Int32" />
+    <NavigationProperty Name="NhanVien" Relationship="Self.FK_Login_NhanVien" FromRole="Login" ToRole="NhanVien" />
+    <NavigationProperty Name="Nhom" Relationship="Self.FK_Login_Nhom" FromRole="Login" ToRole="Nhom" />
+  </EntityType>
+  <EntityType Name="NhanVien">
+    <Key>
+      <PropertyRef Name="MaNV" />
+    </Key>
+    <Property Name="MaNV" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="Ho" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Ten" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DiaChi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NgaySinh" Type="DateTime" Precision="3" />
+    <Property Name="Luong" Type="Double" />
+    <Property Name="GhiChu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MaCN" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <NavigationProperty Name="ChiNhanh" Relationship="Self.FK_NhanVien_ChiNhanh" FromRole="NhanVien" ToRole="ChiNhanh" />
+    <NavigationProperty Name="Logins" Relationship="Self.FK_Login_NhanVien" FromRole="NhanVien" ToRole="Login" />
+    <NavigationProperty Name="PhatSinhs" Relationship="Self.FK_PhatSinh_NhanVien" FromRole="NhanVien" ToRole="PhatSinh" />
+  </EntityType>
+  <EntityType Name="Nhom">
+    <Key>
+      <PropertyRef Name="MaNhom" />
+    </Key>
+    <Property Name="MaNhom" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ten" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ThuTu" Type="Int32" Nullable="false" />
+    <Property Name="GhiChu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Logins" Relationship="Self.FK_Login_Nhom" FromRole="Nhom" ToRole="Login" />
+  </EntityType>
+  <EntityType Name="PhatSinh">
+    <Key>
+      <PropertyRef Name="Phieu" />
+    </Key>
+    <Property Name="Phieu" Type="String" MaxLength="8" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Ngay" Type="DateTime" Precision="3" />
+    <Property Name="Loai" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="HoTenKH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ThanhTien" Type="Double" />
+    <Property Name="MaNV" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="MaKho" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+    <NavigationProperty Name="CT_PhatSinh" Relationship="Self.FK_CT_PhatSinh_PhatSinh" FromRole="PhatSinh" ToRole="CT_PhatSinh" />
+    <NavigationProperty Name="Kho" Relationship="Self.FK_PhatSinh_Kho" FromRole="PhatSinh" ToRole="Kho" />
+    <NavigationProperty Name="NhanVien" Relationship="Self.FK_PhatSinh_NhanVien" FromRole="PhatSinh" ToRole="NhanVien" />
+  </EntityType>
+  <EntityType Name="VatTu">
+    <Key>
+      <PropertyRef Name="MaVT" />
+    </Key>
+    <Property Name="MaVT" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="TenVT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DVT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CT_PhatSinh" Relationship="Self.FK_CT_PhatSinh_VatTu" FromRole="VatTu" ToRole="CT_PhatSinh" />
+  </EntityType>
+  <EntityType Name="MSmerge_conflict_QLVT_CN2_Login">
+    <Key>
+      <PropertyRef Name="MaLogin" />
+      <PropertyRef Name="rowguid" />
+    </Key>
+    <Property Name="MaLogin" Type="Int32" Nullable="false" />
+    <Property Name="MaNV" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="Password" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="MaNhom" Type="Int32" />
+    <Property Name="rowguid" Type="Guid" Nullable="false" />
+    <Property Name="origin_datasource_id" Type="Guid" />
+  </EntityType>
+  <Association Name="FK_Kho_ChiNhanh">
+    <End Role="ChiNhanh" Type="Self.ChiNhanh" Multiplicity="0..1" />
+    <End Role="Kho" Type="Self.Kho" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChiNhanh">
+        <PropertyRef Name="MACN" />
+      </Principal>
+      <Dependent Role="Kho">
+        <PropertyRef Name="MaCN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NhanVien_ChiNhanh">
+    <End Role="ChiNhanh" Type="Self.ChiNhanh" Multiplicity="0..1" />
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChiNhanh">
+        <PropertyRef Name="MACN" />
+      </Principal>
+      <Dependent Role="NhanVien">
+        <PropertyRef Name="MaCN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CT_PhatSinh_PhatSinh">
+    <End Role="PhatSinh" Type="Self.PhatSinh" Multiplicity="1" />
+    <End Role="CT_PhatSinh" Type="Self.CT_PhatSinh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhatSinh">
+        <PropertyRef Name="Phieu" />
+      </Principal>
+      <Dependent Role="CT_PhatSinh">
+        <PropertyRef Name="Phieu" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CT_PhatSinh_VatTu">
+    <End Role="VatTu" Type="Self.VatTu" Multiplicity="1" />
+    <End Role="CT_PhatSinh" Type="Self.CT_PhatSinh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VatTu">
+        <PropertyRef Name="MaVT" />
+      </Principal>
+      <Dependent Role="CT_PhatSinh">
+        <PropertyRef Name="MaVT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PhatSinh_Kho">
+    <End Role="Kho" Type="Self.Kho" Multiplicity="0..1" />
+    <End Role="PhatSinh" Type="Self.PhatSinh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kho">
+        <PropertyRef Name="MaKho" />
+      </Principal>
+      <Dependent Role="PhatSinh">
+        <PropertyRef Name="MaKho" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Login_NhanVien">
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="0..1" />
+    <End Role="Login" Type="Self.Login" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanVien">
+        <PropertyRef Name="MaNV" />
+      </Principal>
+      <Dependent Role="Login">
+        <PropertyRef Name="MaNV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Login_Nhom">
+    <End Role="Nhom" Type="Self.Nhom" Multiplicity="0..1" />
+    <End Role="Login" Type="Self.Login" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Nhom">
+        <PropertyRef Name="MaNhom" />
+      </Principal>
+      <Dependent Role="Login">
+        <PropertyRef Name="MaNhom" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PhatSinh_NhanVien">
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="0..1" />
+    <End Role="PhatSinh" Type="Self.PhatSinh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanVien">
+        <PropertyRef Name="MaNV" />
+      </Principal>
+      <Dependent Role="PhatSinh">
+        <PropertyRef Name="MaNV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="QLVTEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ChiNhanhs" EntityType="Self.ChiNhanh" />
+    <EntitySet Name="CT_PhatSinh" EntityType="Self.CT_PhatSinh" />
+    <EntitySet Name="Khoes" EntityType="Self.Kho" />
+    <EntitySet Name="Logins" EntityType="Self.Login" />
+    <EntitySet Name="NhanViens" EntityType="Self.NhanVien" />
+    <EntitySet Name="Nhoms" EntityType="Self.Nhom" />
+    <EntitySet Name="PhatSinhs" EntityType="Self.PhatSinh" />
+    <EntitySet Name="VatTus" EntityType="Self.VatTu" />
+    <EntitySet Name="MSmerge_conflict_QLVT_CN2_Login" EntityType="Self.MSmerge_conflict_QLVT_CN2_Login" />
+    <AssociationSet Name="FK_Kho_ChiNhanh" Association="Self.FK_Kho_ChiNhanh">
+      <End Role="ChiNhanh" EntitySet="ChiNhanhs" />
+      <End Role="Kho" EntitySet="Khoes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NhanVien_ChiNhanh" Association="Self.FK_NhanVien_ChiNhanh">
+      <End Role="ChiNhanh" EntitySet="ChiNhanhs" />
+      <End Role="NhanVien" EntitySet="NhanViens" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CT_PhatSinh_PhatSinh" Association="Self.FK_CT_PhatSinh_PhatSinh">
+      <End Role="PhatSinh" EntitySet="PhatSinhs" />
+      <End Role="CT_PhatSinh" EntitySet="CT_PhatSinh" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CT_PhatSinh_VatTu" Association="Self.FK_CT_PhatSinh_VatTu">
+      <End Role="VatTu" EntitySet="VatTus" />
+      <End Role="CT_PhatSinh" EntitySet="CT_PhatSinh" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PhatSinh_Kho" Association="Self.FK_PhatSinh_Kho">
+      <End Role="Kho" EntitySet="Khoes" />
+      <End Role="PhatSinh" EntitySet="PhatSinhs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Login_NhanVien" Association="Self.FK_Login_NhanVien">
+      <End Role="NhanVien" EntitySet="NhanViens" />
+      <End Role="Login" EntitySet="Logins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Login_Nhom" Association="Self.FK_Login_Nhom">
+      <End Role="Nhom" EntitySet="Nhoms" />
+      <End Role="Login" EntitySet="Logins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PhatSinh_NhanVien" Association="Self.FK_PhatSinh_NhanVien">
+      <End Role="NhanVien" EntitySet="NhanViens" />
+      <End Role="PhatSinh" EntitySet="PhatSinhs" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
